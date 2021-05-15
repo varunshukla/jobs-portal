@@ -28,7 +28,7 @@ function JobsApplicantsList(props) {
                 color: '#303F60',
                 opacity: 1,
               }}>
-              {modalData?.length || 0} applications
+              Total {modalData?.length || 0} applications
             </div>
           </div>
           <div className="row"

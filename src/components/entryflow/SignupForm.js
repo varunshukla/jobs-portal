@@ -31,6 +31,7 @@ const pageSyles = {
   footerStyle: {
     font: 'normal normal normal 16px Helvetica Neue',
     marginTop: 20,
+    textAlign: 'center'
   }
 };
 
@@ -180,7 +181,7 @@ const SignupForm = () => {
           <button style={pageSyles.submitStyle} type="submit" onClick={handleSignup} >Signup</button>
         </div>
         <div className="row justify-content-center" style={pageSyles.footerStyle}>
-          Have an account? <Link style={pageSyles.newAccountStyle} to="/login">&nbsp;Login</Link>
+          <div>Have an account? <Link style={pageSyles.newAccountStyle} to="/login">&nbsp;Login</Link></div>
         </div>
       </div >
     </div >

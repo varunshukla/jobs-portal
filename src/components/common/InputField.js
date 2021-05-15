@@ -17,8 +17,8 @@ const pageSyles = {
 
 export const InputField = ({ label, type, value, onChange, required, error, errorText, placeholder }) => {
   return (
-    <div className="col">
-      <div className="row">
+    <div className="row">
+      <div className="col">
         <label style={pageSyles.labelStyle} >{label}</label>
         <input value={value} type={type}
           required={required}

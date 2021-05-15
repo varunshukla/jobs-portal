@@ -35,6 +35,7 @@ const pageSyles = {
   footerStyle: {
     font: 'normal normal normal 16px Helvetica Neue',
     marginTop: 20,
+    textAlign: 'center'
   }
 };
 
@@ -59,30 +60,26 @@ const LoginForm = () => {
         <div className="row">
           <div style={pageSyles.loginStyle}>Login</div>
         </div>
-        <div className="row">
-          <InputField
-            label="Email address"
-            type="email"
-            value={username}
-            onChange={setusername}
-            error={error}
-          />
-        </div>
-        <div className="row">
-          <InputField
-            label="Password"
-            type="password"
-            value={password}
-            onChange={setpassword}
-            error={error}
-            errorText={"Incorrect email address & password"}
-          />
-        </div>
+        <InputField
+          label="Email address"
+          type="email"
+          value={username}
+          onChange={setusername}
+          error={error}
+        />
+        <InputField
+          label="Password"
+          type="password"
+          value={password}
+          onChange={setpassword}
+          error={error}
+          errorText={"Incorrect email address & password"}
+        />
         <div className="row justify-content-center">
           <button style={pageSyles.submitStyle} type="submit" onClick={handleSubmit} >Login</button>
         </div>
         <div className="row justify-content-center" style={pageSyles.footerStyle}>
-          New to MyJobs? <Link style={pageSyles.newAccountStyle} to="/signup">&nbsp;Create an account</Link>
+          <div>New to MyJobs? <Link style={pageSyles.newAccountStyle} to="/signup">&nbsp;Create an account</Link></div>
         </div>
       </div >
     </div >

@@ -24,7 +24,7 @@ import { OpenJobs } from "./components/candidate/OpenJobs";
 //Recruiter
 import { JobsPosted } from "./components/recruiter/JobsPosted";
 import PostNewJob from "./components/recruiter/PostNewJob";
-import JobApplicantsList from "./components/recruiter/JobApplicantsList";
+import { HomePage } from "./components/common/HomePage";
 
 export default function App() {
   return (
@@ -45,7 +45,7 @@ export default function App() {
         <Route path="/signup" component={SignupForm} />
         <Route path="/login" component={LoginForm} />
         
-        <Route path="/" component={JobApplicantsList} />
+        <Route path="/" component={HomePage} />
         <Route path="*" component={LoginForm} />
       </Switch>
     </div>

@@ -19,8 +19,8 @@ const pageSyles = {
 export const RadioField = (props) => {
   const { setrole, error, errorText } = props;
   return (
-    <div className="col">
-      <div className="row">
+    <div className="row">
+        <div className="col">
         <div onClick={setrole}>
           <input type="radio" className="btn-check" name="options" id="recruiter"/>
           <label className="btn btn-primary" for="recruiter" style={pageSyles.radioStyle}>Recruiter</label>
