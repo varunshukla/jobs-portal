@@ -1,0 +1,62 @@
+.main-container {
+  margin-left: 7%;
+  margin-right: 7%;
+  justify-content: center;
+}
+
+.appbar {
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 50px;
+  margin-top: 20px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid gray;
+}
+
+.login {
+  background: #43AFFF33 0% 0% no-repeat padding-box;
+  border: 1px solid #43AFFF;
+  border-radius: 5px;
+  opacity: 1;
+  width: 148px;
+  height: 46px;
+  color: white;
+  font: normal normal bold 16px/19px Helvetica Neue;
+}
+
+.applied {
+  color: white;
+  text-align: center;
+  font: normal normal bold 16px/19px Helvetica Neue;
+  opacity: 1;
+
+  &:active,
+  &:focus {
+    border-bottom: 4px solid #43AFFF;
+  }
+}
+
+.material-icons-outlined.blue { color: #43AFFF; font-size: 18px;}
+.material-icons-outlined.white { color: #FFFFFF; }
+.material-icons-outlined.gray { color: #7e7a7a; }
+
+.breadcrumb {
+  background-color: unset;
+  color: white;
+  text-align: center;
+  font: normal normal normal 12px/15px Helvetica Neue;
+  padding: 0;
+  align-items: center;
+  
+  .breadcrumb-item+.breadcrumb-item::before { 
+    color: white;
+    content: '>';
+  }
+  
+  .homeiconsize {
+    font-size: 20px;
+  }
+}
+
+.editsize { font-size: 40px; }
+.descriptionsize { font-size: 80px; }
