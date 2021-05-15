@@ -1,33 +1,37 @@
 import API from './API';
 
-const createJob = (data) => {
+async function createJob(data) {
   const info = {
     title: data.title,
     description: data.description,
     location: data.location,
   }
 
-  const response = API.makePostCall('/jobs/', info);
+  const response = await API.makePostCall('/jobs/', info);
   console.log(response);
+  return response;
 }
 
-const getJobDetails = (data) => {
-  const response = API.makeGetCall(`/jobs/${data.jobId}`);
+async function getJobDetails(data) {
+  const response = await API.makeGetCall(`/jobs/${data.jobId}`);
   console.log(response);
+  return response;
 }
 
-const getAllJobs = () => {
-  const response = API.makeGetCall(`/jobs`);
-  console.log(response);
+async function getAllJobs(data) {
+  const response = await API.makeGetCall(`/jobs?page=${data.pageNo}`);
+  console.log('response ', response);
+  return response;
 }
 
-const deleteJob = (data) => {
+async function deleteJob(data) {
   const info = {
     jobId: data.jobId,
   }
 
-  const response = API.makeDeleteCall('/jobs', info);
+  const response = await API.makeDeleteCall('/jobs', info);
   console.log(response);
+  return response;
 }
 // eslint-disable-next-line import/no-anonymous-default-export
-export default { createJob, getJobDetails, getAllJobs, deleteJob };
+export {createJob, getJobDetails, getAllJobs, deleteJob};

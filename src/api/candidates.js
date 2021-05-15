@@ -1,21 +1,24 @@
 import API from './API';
 
-const applyToJob = (data) => {
+const applyToJob = async (data) => {
   const info = {
     jobId: data.jobId,
   }
-  const response = API.makePostCall('/candidates/jobs', info);
+  const response = await API.makePostCall('/candidates/jobs', info);
   console.log(response);
+  return response;
 }
 
-const getAvailableJobs = () => {
-  const response = API.makeGetCall(`/candidates/jobs`, true);
+const getAvailableJobs = async () => {
+  const response = await API.makeGetCall(`/candidates/jobs`, true);
   console.log(response);
+  return response;
 }
 
-const getAppliedJobs = () => {
-  const response = API.makeGetCall(`/candidates/jobs/applied`, true);
+const getAppliedJobs = async () => {
+  const response = await API.makeGetCall(`/candidates/jobs/applied`, true);
   console.log(response);
+  return response;
 }
 
 // eslint-disable-next-line import/no-anonymous-default-export

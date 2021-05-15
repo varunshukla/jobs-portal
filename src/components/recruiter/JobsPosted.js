@@ -56,10 +56,12 @@ export const JobsPosted = () => {
       <nav aria-label="breadcrumb">
         <ol className="breadcrumb">
           <li className="breadcrumb-item">
-            <span className="material-icons material-icons-outlined blue homeiconsize">
-              home
-            </span>
-            Home
+            <div>
+              <span className="material-icons material-icons-outlined blue homeiconsize">
+                home
+              </span>
+              Home
+            </div>
           </li>
         </ol>
       </nav>
@@ -113,7 +115,7 @@ export const JobsPosted = () => {
             >
               Post a job
           </button>
-        </div>
+          </div>
       }
       <JobsApplicantsList show={modalShow} onHide={() => setModalShow(false)} modalData={modalJob} />
     </div>

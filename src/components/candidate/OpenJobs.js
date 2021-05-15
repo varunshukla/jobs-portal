@@ -1,49 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import { map } from 'lodash';
 import { Card } from '../common/Card';
-
-const data = [
-  {
-    title: "Designer",
-    description: "lkdsjf sgsh fsd afbgekjfbf adj  fefgejf fgsef ffjhw rwemfef wegfwef wefwefjw das sh asdhs a bjhfas dwkgc asasasf ajfgfh ff fjfafbasjhfg s",
-    location: "Gurgaon",
-    showAction: true,
-    actionText: "Apply"
-  }, {
-    title: "DesignerAA",
-    description: "lkdsjf sgsh fsd afbgekjfbf adj  fefgejf fgsef ffjhw rwemfef wegfwef wefwefjw das sh asdhs a bjhfas dwkgc asasasf ajfgfh ff fjfafbasjhfg s",
-    location: "Gurgaon",
-    showAction: true,
-    actionText: "Apply"
-  }, {
-    title: "Akjk",
-    description: "lkdsjf sgsh fsd afbgekjfbf adj  fefgejf fgsef ffjhw rwemfef wegfwef wefwefjw das sh asdhs a bjhfas dwkgc asasasf ajfgfh ff fjfafbasjhfg s",
-    location: "Gurgaon",
-    showAction: true,
-    actionText: "Apply"
-  }, {
-    title: "skjdh",
-    description: "lkdsjf sgsh fsd afbgekjfbf adj  fefgejf fgsef ffjhw rwemfef wegfwef wefwefjw das sh asdhs a bjhfas dwkgc asasasf ajfgfh ff fjfafbasjhfg s",
-    location: "Gurgaon",
-    showAction: true,
-    actionText: "Apply"
-  }, {
-    title: "sdsfkjsdhf",
-    description: "lkdsjf sgsh fsd afbgekjfbf adj  fefgejf fgsef ffjhw rwemfef wegfwef wefwefjw das sh asdhs a bjhfas dwkgc asasasf ajfgfh ff fjfafbasjhfg s",
-    location: "Gurgaon",
-    showAction: true,
-    actionText: "Apply"
-  },
-];
+import { getAllJobs } from '../../api/jobs';
 
 export const OpenJobs = () => {
-  const [openjobs, setopenjobs] = useState(data)
+  const [openjobs, setopenjobs] = useState('');
+  const [pageNo, setpageNo] = useState(1);
 
   useEffect(() => {
     // api call for open job
-    setopenjobs(data);
-    
-  }, [openjobs])
+    getAllJobs({ pageNo }).then(resp => {
+      if (resp.success) {
+        setopenjobs(resp.data);
+      }
+    });
+  }, [pageNo]);
 
   const actionCta = (job) => {
     // apply for job
@@ -55,10 +26,12 @@ export const OpenJobs = () => {
       <nav aria-label="breadcrumb">
         <ol className="breadcrumb">
           <li className="breadcrumb-item">
-            <span className="material-icons material-icons-outlined blue homeiconsize">
-              home
-            </span>
-            Home
+            <div>
+              <span className="material-icons material-icons-outlined blue homeiconsize">
+                home
+              </span>
+              Home
+            </div>
           </li>
         </ol>
       </nav>
@@ -67,7 +40,7 @@ export const OpenJobs = () => {
         color: '#FFFFFF',
         opacity: 1,
       }} className="my-4">
-        Jobs for you 
+        Jobs for you
       </div>
       <div className="row">
         {

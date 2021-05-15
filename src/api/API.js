@@ -1,17 +1,24 @@
-const baseUrl = "https://jobs-api.squareboat.info/api/v1/";
+const baseUrl = "https://jobs-api.squareboat.info/api/v1";
 
 async function makeDeleteCall(url, data) {
   if (url && data) {
     const path = `${baseUrl}${url}`;
-    const response = await fetch(path, {
+    const options = {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
         Authorisation: window.localStorage.getItem('token')
       },
       body: JSON.stringify(data),
-    });
-    return response.json();
+    };
+    
+    const response = await fetch(path, options)
+      .then(response => {
+        return response.json();
+      })
+      .then(result => result);
+
+    return response;
   }
 }
 
@@ -25,8 +32,13 @@ async function makePostCall(url, data, tokenRequired = true) {
         Authorization: tokenRequired ? window.localStorage.getItem('token') : null,
       },
     };
-    const response = await fetch(path, options);
-    return response.json();
+    const response = await fetch(path, options)
+      .then(response => {
+        return response.json();
+      })
+      .then(result => result);
+
+    return response;
   }
 }
 
@@ -38,8 +50,13 @@ async function makeGetCall(url, tokenRequired = false) {
       Authorization: tokenRequired ? window.localStorage.getItem('token') : null,
     },
   };
-  const response = await fetch(path, options);
-  return response.json();
+  const response = await fetch(path, options)
+    .then(response => {
+      return response.json();
+    })
+    .then(result => result);
+
+  return response;
 }
 
 // eslint-disable-next-line import/no-anonymous-default-export

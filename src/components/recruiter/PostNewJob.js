@@ -59,10 +59,12 @@ const PostNewJob = () => {
         <nav aria-label="breadcrumb">
           <ol className="breadcrumb">
             <li className="breadcrumb-item">
+              <div>
               <span className="material-icons material-icons-outlined blue homeiconsize">
-                home
-            </span>
-            Home
+                  home
+              </span>
+              Home
+              </div>
           </li>
             <li className="breadcrumb-item">
               Post a job

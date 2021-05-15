@@ -41,10 +41,12 @@ export const AppliedJobs = () => {
       <nav aria-label="breadcrumb">
         <ol className="breadcrumb">
           <li className="breadcrumb-item">
-            <span className="material-icons material-icons-outlined blue homeiconsize">
-              home
-            </span>
-            Home
+            <div>
+              <span className="material-icons material-icons-outlined blue homeiconsize">
+                home
+              </span>
+              Home
+            </div>
           </li>
           <li className="breadcrumb-item">
             Applied Jobs
