@@ -43,25 +43,66 @@ const pageSyles = {
 const LoginForm = () => {
   const [username, setusername] = useState('');
   const [password, setpassword] = useState('');
-  const [error, seterror] = useState(null);
+  const [errors, seterrors] = useState({});
+  const [serverError, setserverError] = useState(null);
 
   const history = useHistory();
 
-  const handleSubmit = () => {
-    if (!username || !password) {
-      seterror("Incorrect email address & password");
-    } else {
-      const data = { email: username, password };
+  const handleValidation = () => {
+    const fields = {
+      username, password
+    };
+    let errors = {};
+    let isFormValid = true;
 
+    // Password
+    if (!fields["password"]) {
+      isFormValid = false;
+      errors["password"] = "Field is mandatory";
+    }
+    if (fields["password"].length < 6) {
+      isFormValid = false;
+      errors["password"] = "Password must be greater than 6 characters";
+    }
+
+    //Email
+    if (!fields["username"]) {
+      isFormValid = false;
+      errors["username"] = "Field is mandatory";
+    }
+
+    if (typeof fields["username"] !== "undefined") {
+      let lastAtPos = fields["username"].lastIndexOf('@');
+      let lastDotPos = fields["username"].lastIndexOf('.');
+
+      if (!(lastAtPos < lastDotPos && lastAtPos > 0 && fields["username"].indexOf('@@') === -1 && lastDotPos > 2 && (fields["username"].length - lastDotPos) > 2)) {
+        isFormValid = false;
+        errors["username"] = "Email is not valid";
+      }
+    }
+
+    seterrors(errors);
+    return isFormValid;
+  };
+
+  const handleSubmit = () => {
+    const isValid = handleValidation();
+    if (isValid) {
+      const data = { email: username, password };
       login(data).then(resp => {
-        seterror(null);
+        seterrors(null);
+        setserverError(null);
         if (resp.success) {
-          if (resp.data.role === 0)
-            history.push('/recruiter/home');
+          if (resp.data.userRole === 0)
+            setTimeout(function () {
+              history.replace('/recruiter/home');
+            }, 1000);
           else
-            history.push('/candidate/home');
+            setTimeout(function () {
+              history.replace('/candidate/home');
+            }, 1000);
         } else {
-          seterror(resp.message);
+          setserverError("Incorrect email & password!!! ");
         }
       });
     }
@@ -73,26 +114,43 @@ const LoginForm = () => {
         <div className="row">
           <div style={pageSyles.loginStyle}>Login</div>
         </div>
-        <InputField
-          label="Email address"
-          type="email"
-          value={username}
-          onChange={setusername}
-          error={error}
-        />
-        <InputField
-          label="Password"
-          type="password"
-          value={password}
-          onChange={setpassword}
-          error={!!error}
-          errorText={error}
-        />
+        <div className="row">
+          <InputField
+            label="Email address"
+            type="email"
+            value={username}
+            onChange={setusername}
+            error={!!errors?.username}
+            errorText={errors?.username}
+          />
+          <InputField
+            label="Password"
+            type="password"
+            value={password}
+            onChange={setpassword}
+            error={!!errors?.password}
+            errorText={errors?.password}
+          />
+        </div>
+        {
+          serverError &&
+          <div className="row justify-content-center">
+            <div style={{
+              float: 'right',
+              font: 'normal normal normal 12px / 14px Helvetica Neue',
+              color: '#FF0000',
+              opacity: 0.8
+            }}>
+              {serverError}
+            </div>
+          </div>
+        }
         <div className="row justify-content-center">
           <button style={pageSyles.submitStyle} type="submit" onClick={handleSubmit}>Login</button>
         </div>
         <div className="row justify-content-center" style={pageSyles.footerStyle}>
-          <div>New to MyJobs? <span style={pageSyles.newAccountStyle} onClick={() => history.push('/signup')}>&nbsp;Create an account</span></div>
+          <div>New to MyJobs? <span style={pageSyles.newAccountStyle}
+            className="cursor" onClick={() => history.push('/signup')}>&nbsp;Create an account</span></div>
         </div>
       </div >
     </div >

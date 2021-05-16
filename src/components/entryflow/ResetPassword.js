@@ -102,15 +102,15 @@ const ResetPassword = () => {
           onChange={(e) => setinitialpassword(e)}
           type="password"
           required
-          error={!!errors['confirmpassword']}
+          error={!!errors?.confirmpassword}
           placeholder="Enter your password" />
         <InputField
           label="Confirm new password"
           value={confirmpassword}
           onChange={(e) => setconfirmpassword(e)}
           required
-          error={!!errors['confirmpassword']}
-          errorText={errors['confirmpassword']}
+          error={!!errors?.confirmpassword}
+          errorText={errors?.confirmpassword}
           placeholder="Enter your password" />
         {
           serverError &&

@@ -18,6 +18,12 @@
   font: normal normal bold 16px/19px Helvetica Neue;
 }
 
+.cursor {
+  &:hover {
+    cursor: pointer;
+  }
+}
+
 .applied {
   color: white;
   text-align: center;

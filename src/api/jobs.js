@@ -6,9 +6,7 @@ async function createJob(data) {
     description: data.description,
     location: data.location,
   }
-
   const response = await API.makePostCall('/jobs/', info);
-  console.log(response);
   return response;
 }
 
@@ -19,7 +17,6 @@ async function getJobDetails(data) {
 
 async function getAllJobs(data) {
   const response = await API.makeGetCall(`/jobs?page=${data.pageNo}`);
-  console.log('response ', response);
   return response;
 }
 
@@ -27,9 +24,7 @@ async function deleteJob(data) {
   const info = {
     jobId: data.jobId,
   }
-
   const response = await API.makeDeleteCall('/jobs', info);
-  console.log(response);
   return response;
 }
 // eslint-disable-next-line import/no-anonymous-default-export

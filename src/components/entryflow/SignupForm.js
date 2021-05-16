@@ -72,7 +72,7 @@ const SignupForm = () => {
       errors["fullname"] = "Field is mandatory";
     }
 
-    if (typeof fields["fullname"] !== "undefined") {
+    else  if (typeof fields["fullname"] !== "undefined") {
       if (!fields["fullname"].match(/^[a-zA-Z]+$/)) {
         isFormValid = false;
         errors["fullname"] = "Only letters are allowed";
@@ -84,12 +84,12 @@ const SignupForm = () => {
       isFormValid = false;
       errors["confirmpassword"] = "Field is mandatory";
     }
-    if (fields["initialpassword"].length < 6 || fields["confirmpassword"] < 6) {
+    else if (fields?.initialpassword.length < 6 || fields?.confirmpassword.length < 6) {
       isFormValid = false;
       errors["confirmpassword"] = "Password must be greater than 6 characters";
     }
 
-    if (!fields["initialpassword"] !== !fields["confirmpassword"]) {
+    else if (!fields["initialpassword"] !== !fields["confirmpassword"]) {
       isFormValid = false;
       errors["confirmpassword"] = "Passwords do not match";
     }
@@ -100,7 +100,7 @@ const SignupForm = () => {
       errors["email"] = "Field is mandatory";
     }
 
-    if (typeof fields["email"] !== "undefined") {
+    else if (typeof fields["email"] !== "undefined") {
       let lastAtPos = fields["email"].lastIndexOf('@');
       let lastDotPos = fields["email"].lastIndexOf('.');
 
@@ -118,7 +118,7 @@ const SignupForm = () => {
     const isValid = handleValidation();
     if (isValid) {
       const data = {
-        userRole: role,
+        userRole: +role,
         name: fullname,
         password: initialpassword,
         confirmPassword: confirmpassword,
@@ -129,11 +129,11 @@ const SignupForm = () => {
       register(data).then(resp => {
         seterrors({});
         setserverError(null);
-        if (resp.success) {
-          if (role === 0) // recruiter role
-            history.push('/recruiter/home');
-          else if (role === 1)
-            history.push('/candidate/home');
+        if (resp?.success) {
+          if (+role === 0) // recruiter role
+            history.replace('/recruiter/home');
+          else if (+role === 1)
+            history.replace('/candidate/home');
         } else {
           setserverError(resp.message);
         }
@@ -148,19 +148,21 @@ const SignupForm = () => {
         <label>I'm a*</label>
         <RadioField
           setrole={(event) => {
-            setrole(event.target.htmlFor)
+            setrole(event.target.name)
           }}
           role={role}
-          error={!!errors['role']}
-          errorText={errors['role']}
+          error={!!errors?.role}
+          errorText={errors?.role}
         />
         <InputField
           label="Full Name*"
           value={fullname}
-          onChange={(e) => setfullname(e)}
+          onChange={(e) => {
+            setfullname(e)
+          }}
           required
-          error={!!errors['fullname']}
-          errorText={errors['fullname']}
+          error={!!errors?.fullname}
+          errorText={errors?.fullname}
           placeholder="Enter full name" />
         <InputField
           label="Email Address*"
@@ -168,8 +170,8 @@ const SignupForm = () => {
           onChange={(e) => setemailaddress(e)}
           type="email"
           required
-          error={!!errors['email']}
-          errorText={errors['email']}
+          error={!!errors?.email}
+          errorText={errors?.email}
           placeholder="Enter email address" />
         <div className="row">
           <div className="col">
@@ -179,7 +181,7 @@ const SignupForm = () => {
               onChange={(e) => setinitialpassword(e)}
               type="password"
               required
-              error={!!errors['confirmpassword']}
+              error={!!errors?.confirmpassword}
               placeholder="Enter your password" />
           </div>
           <div className="col">
@@ -188,8 +190,8 @@ const SignupForm = () => {
               value={confirmpassword}
               onChange={(e) => setconfirmpassword(e)}
               required
-              error={!!errors['confirmpassword']}
-              errorText={errors['confirmpassword']}
+              error={!!errors?.confirmpassword}
+              errorText={errors?.confirmpassword}
               placeholder="Enter your password" />
           </div>
         </div>
@@ -217,6 +219,7 @@ const SignupForm = () => {
         <div className="row justify-content-center" style={pageSyles.footerStyle}>
           <div>Have an account? <span
             style={pageSyles.newAccountStyle}
+            className="cursor"
             onClick={() => history.push("/login")}
           >&nbsp;Login</span></div>
         </div>

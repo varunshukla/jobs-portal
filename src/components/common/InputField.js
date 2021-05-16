@@ -55,7 +55,7 @@ InputField.propTypes = {
   label: PropTypes.string.isRequired,
   type: PropTypes.string,
   value: PropTypes.string.isRequired,
-  onChange: PropTypes.string.isRequired,
+  onChange: PropTypes.func.isRequired,
   required: PropTypes.bool,
   error: PropTypes.bool,
   errorText: PropTypes.string,

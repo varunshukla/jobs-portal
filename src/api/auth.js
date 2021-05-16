@@ -3,34 +3,39 @@ import API from './API';
 const login = async (data) => {
   const response = await API.makePostCall('/auth/login', {
     email: data.email, password: data.password
-  });
-  window.localStorage.setItem('user', response);
-  window.localStorage.setItem('token', response.data.token);
+  }, false);
+  if (response.success) {
+    window.localStorage.setItem('user', JSON.stringify(response.data));
+    window.localStorage.setItem('token', JSON.stringify(response.data.token));
+  }
   return response;
 };
 
 const register = async (data) => {
   const info = {
     email: data.email,
-    name: data.fullname,
-    userRole: data.role,
+    name: data.name,
+    userRole: data.userRole,
     password: data.password,
     confirmPassword: data.confirmPassword,
     skills: data.skills,
   }
 
-  const response = await API.makePostCall('/auth/register', info);
-  window.localStorage.setItem('user', response);
-  window.localStorage.setItem('token', response.data.token);
-  return response;
+  const response = await API.makePostCall('/auth/register', info, false);
+  if (response.success) {
+    window.localStorage.setItem('user', JSON.stringify(response.data));
+    window.localStorage.setItem('token', JSON.stringify(response.data.token));
+    return response;
+  }
 }
 
 const resetPasswordToken = async (data) => {
   const response = await API.makeGetCall(`/auth/resetpassword?email=${data.email}`);
-  console.log(response);
   //save in local storage
-  window.localStorage.setItem('resettokendata', response.data);
-  return response;
+  if (response.success) {
+    window.localStorage.setItem('resettokendata', JSON.stringify(response.data));
+    return response;
+  }
 }
 
 const verifyPasswordToken = async (data) => {
@@ -40,8 +45,8 @@ const verifyPasswordToken = async (data) => {
     if (response.data.exp - parseInt(new Date().getTime() / 1000) > 0) {
       changePassword({ ...data, token: resetPasswordToken.token }).then(resp => {
         if (resp.success) {
-          window.localStorage.setItem('user', response);
-          window.localStorage.setItem('token', response.data.token);
+          window.localStorage.setItem('user', JSON.stringify(response.data));
+          window.localStorage.setItem('token', JSON.stringify(response.data.token));
           return resp;
         }
       });
@@ -55,7 +60,7 @@ const changePassword = async (data) => {
     confirmPassword: data.confirmPassword,
     token: data.token,
   }
-  const response = await API.makePostCall('/auth/resetpassword', info);
+  const response = await API.makePostCall('/auth/resetpassword', info, false);
   return response;
 }
 // eslint-disable-next-line import/no-anonymous-default-export

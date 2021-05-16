@@ -10,13 +10,11 @@ const applyToJob = async (data) => {
 
 const getAvailableJobs = async () => {
   const response = await API.makeGetCall(`/candidates/jobs`, true);
-  console.log(response);
   return response;
 }
 
 const getAppliedJobs = async () => {
   const response = await API.makeGetCall(`/candidates/jobs/applied`, true);
-  console.log(response);
   return response;
 }
 

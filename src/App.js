@@ -1,11 +1,5 @@
-import React from "react";
-import {
-  Switch,
-  Route,
-  Link,
-  useRouteMatch,
-  useParams
-} from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Switch, Route, Redirect } from "react-router-dom";
 import './App.scss';
 
 // Common
@@ -25,68 +19,55 @@ import { OpenJobs } from "./components/candidate/OpenJobs";
 import { JobsPosted } from "./components/recruiter/JobsPosted";
 import PostNewJob from "./components/recruiter/PostNewJob";
 import { HomePage } from "./components/common/HomePage";
+import NotFound from "./components/common/NotFound";
 
 export default function App() {
+  const [user, setuser] = useState(null);
+  const [authed, setauthed] = useState(false);
+
+  useEffect(() => {
+    const user = JSON.parse(window.localStorage.getItem('user'));
+    setuser(user);
+    setauthed(true);
+
+  }, []);
+
+  function PrivateRoute({ component: Component, authed, ...rest }) {
+    return (
+      <Route
+        {...rest}
+        render={(props) => authed === true
+          ? <Component {...props} />
+          : <Redirect to={{ pathname: '/', state: { from: props.location } }} />}
+      />
+    )
+  }
+
   return (
     <div className="container">
       <Header />
       <Switch>
-        <Route path="/topics" component={Topics} />
-        
-        {/* Candidate */}
-        <Route path="/candidate/home" component={OpenJobs} />
-        <Route path="/candidate/applied" component={AppliedJobs} />
         {/* Recruiter */}
-        <Route path="/recruiter/home" component={JobsPosted} />
-        <Route path="/recruiter/post-job" component={PostNewJob} />
-
+        <PrivateRoute authed={authed} path="/recruiter/home" component={JobsPosted} />
+        <PrivateRoute authed={authed} path="/recruiter/post-job" component={PostNewJob} />
+        {/* Candidate */}
+        <PrivateRoute authed={authed} path="/candidate/home" component={OpenJobs} />
+        <PrivateRoute authed={authed} path="/candidate/applied" component={AppliedJobs} />
+        {/* Auth */}
         <Route path="/reset-password" component={ResetPassword} />
         <Route path="/forgot-password" component={ForgotPassword} />
         <Route path="/signup" component={SignupForm} />
         <Route path="/login" component={LoginForm} />
-        
-        <Route path="/" component={HomePage} />
-        <Route path="*" component={LoginForm} />
+
+        <Route path="/" component={() => {
+          if (user?.userRole === 1) {
+            return <OpenJobs />;
+          } else if (user?.userRole === 0) {
+            return <JobsPosted />;
+          } else return <HomePage />;
+        }} />
+        <Route path="*" component={NotFound} />
       </Switch>
     </div>
   );
-}
-
-function Topics() {
-  let match = useRouteMatch();
-
-  return (
-    <div>
-      <h2>Topics</h2>
-
-      <ul>
-        <li>
-          <Link to={`${match.url}/components`}>Components</Link>
-        </li>
-        <li>
-          <Link to={`${match.url}/props-v-state`}>
-            Props v. State
-          </Link>
-        </li>
-      </ul>
-
-      {/* The Topics page has its own <Switch> with more routes
-          that build on the /topics URL path. You can think of the
-          2nd <Route> here as an "index" page for all topics, or
-          the page that is shown when no topic is selected */}
-      <Switch>
-        <Route path={`${match.path}/:topicId`}>
-          <Topic />
-        </Route>
-        <Route path={match.path}>
-          <h3>Please select a topic.</h3>
-        </Route>
-      </Switch>
-    </div>
-  );
-}
-
-function Topic() {
-  let { topicId } = useParams();
-  return <h3>Requested topic ID: {topicId}</h3>;
 }

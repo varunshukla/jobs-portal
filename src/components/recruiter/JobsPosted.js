@@ -9,16 +9,18 @@ export const JobsPosted = () => {
   const [openjobs, setopenjobs] = useState(null)
   const [modalShow, setModalShow] = useState(false);
   const [modalApplicants, setmodalJob] = useState(null);
+  const [metaData, setmetaData] = useState(null);
 
   useEffect(() => {
     // api call for posted jobs
     getPostedJobs().then(resp => {
       if (resp.success) {
-        setopenjobs(resp.data);
+        setopenjobs(resp.data.data);
+        setmetaData(resp.data.metadata);
       }
     });
-    
-  }, [openjobs])
+
+  }, [])
 
   const actionCta = (job) => {
     // open candidates applied
@@ -35,12 +37,7 @@ export const JobsPosted = () => {
       <nav aria-label="breadcrumb">
         <ol className="breadcrumb">
           <li className="breadcrumb-item">
-            <div>
-              <span className="material-icons material-icons-outlined blue homeiconsize">
-                home
-              </span>
-              Home
-            </div>
+            Home
           </li>
         </ol>
       </nav>

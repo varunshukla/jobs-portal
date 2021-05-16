@@ -22,11 +22,12 @@ export const RadioField = (props) => {
     <div className="row">
         <div className="col">
         <div onClick={setrole}>
-          <input type="radio" className="btn-check" name="options" id="0"/>
+          <input type="radio" className="btn-check" name="0" id="0"/>
           <label className="btn btn-primary" for="0" style={pageSyles.radioStyle}>Recruiter</label>
 
-          <input type="radio" className="btn-check" name="options" id="1"/>
+          <input type="radio" className="btn-check" name="1" id="1"/>
           <label className="btn btn-primary" for="1" style={pageSyles.radioStyle}>Candidate</label>
+
         </div>
       </div>
       <div className="row justify-content-end">

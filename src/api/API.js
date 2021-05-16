@@ -7,7 +7,7 @@ async function makeDeleteCall(url, data) {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
-        Authorisation: window.localStorage.getItem('token')
+        Authorization: JSON.parse(window.localStorage.getItem('token'))
       },
       body: JSON.stringify(data),
     };
@@ -29,8 +29,9 @@ async function makePostCall(url, data, tokenRequired = true) {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: tokenRequired ? window.localStorage.getItem('token') : null,
+        Authorization: tokenRequired ? JSON.parse(window.localStorage.getItem('token')) : null,
       },
+      body: JSON.stringify(data),
     };
     const response = await fetch(path, options)
       .then(response => {
@@ -47,9 +48,10 @@ async function makeGetCall(url, tokenRequired = false) {
   const options = {
     method: 'GET',
     headers: {
-      Authorization: tokenRequired ? window.localStorage.getItem('token') : null,
+      Authorization: tokenRequired ? JSON.parse(window.localStorage.getItem('token')) : null,
     },
   };
+  console.log("options ", options);
   const response = await fetch(path, options)
     .then(response => {
       return response.json();

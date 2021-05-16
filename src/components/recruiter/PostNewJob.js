@@ -41,16 +41,16 @@ const pageSyles = {
 const PostNewJob = () => {
   const [title, settitle] = useState('');
   const [description, setdescription] = useState('');
-  const [locaion, setlocation] = useState('');
+  const [location, setlocation] = useState('');
   const [error, seterror] = useState(false);
 
   const history = useHistory();
 
   const handlePostJob = () => {
-    if (!title || !description || !locaion) {
+    if (!title || !description || !location) {
       seterror(true);
     } else {
-      const data = { title, description, locaion };
+      const data = { title, description, location };
       createJob(data).then(resp => {
         if (resp.success) {
           history.push('/recruiter/home');
@@ -67,12 +67,7 @@ const PostNewJob = () => {
         <nav aria-label="breadcrumb">
           <ol className="breadcrumb">
             <li className="breadcrumb-item">
-              <div>
-              <span className="material-icons material-icons-outlined blue homeiconsize">
-                  home
-              </span>
               Home
-              </div>
           </li>
             <li className="breadcrumb-item">
               Post a job
@@ -103,7 +98,7 @@ const PostNewJob = () => {
             <InputField
               label="Location*"
               required
-              value={locaion}
+              value={location}
               onChange={setlocation}
               error={error}
               errorText="All fields are mandatory"
@@ -111,7 +106,7 @@ const PostNewJob = () => {
             />
           </div>
           <div className="row justify-content-center">
-            <button style={pageSyles.submitStyle} type="submit" onClick={handlePostJob}>Post</button>
+            <button style={pageSyles.submitStyle} onClick={handlePostJob}>Post</button>
           </div>
         </div>
       </div>

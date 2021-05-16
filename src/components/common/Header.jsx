@@ -1,22 +1,25 @@
 import React from 'react';
 import Avatar from 'react-avatar';
-import { Nav, Navbar, NavDropdown } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { Form, Nav, Navbar, NavDropdown } from 'react-bootstrap';
+import { Link, useHistory } from 'react-router-dom';
 
 const Header = () => {
   const [auth, setAuth] = React.useState(true);
-  const [user, setuser] = React.useState({role: 'candidate'});
+  const [user, setuser] = React.useState(JSON.parse(window.localStorage.getItem('user')));
+  const history = useHistory();
   
   React.useEffect(() => {
-    const user = window.localStorage.getItem('user');
-    
-    setAuth(window.localStorage.getItem('token'));
-    // setuser(user);
+    const user = JSON.parse(window.localStorage.getItem('user'));
+    setAuth(window.localStorage.getItem('token') || null);
+    setuser(user);
 
   }, [auth]);
 
-  const logout = () => {
-    window.localStorage.clear();
+  const logout = async () => {
+    await window.localStorage.clear();
+    setTimeout(function () {
+      history.replace('/');
+    }, 1000);
   };
 
   return (
@@ -31,23 +34,23 @@ const Header = () => {
       </Navbar.Brand>
     <Nav className="mr-auto">
     </Nav>
-      { user.role === 'candidate' &&
+      { user?.userRole === 1 &&
         <Link className="applied" to="/candidate/applied">
           Applied jobs
         </Link>
       }
-      { user.role === 'recruiter' && 
+      { user?.userRole === 0 && 
           <Link className="applied" to="/recruiter/post-job">
             Post a job
           </Link>
       }
       { auth && 
-        <div>
-          <Avatar name="We make" round size={40} color="gray" />
-          <NavDropdown title="Dropdown" id="basic-nav-dropdown">
-              <NavDropdown.Item onClick={logout}>Logout</NavDropdown.Item>
+        <Form inline>
+          <Avatar name={user?.name} round size={40} color="gray" alt="U"/>
+          <NavDropdown id="basic-nav-dropdown">
+              <NavDropdown.Item className="cursor" onClick={logout}>Logout</NavDropdown.Item>
           </NavDropdown>
-        </div>
+        </Form>
       }
 
       { !auth && 

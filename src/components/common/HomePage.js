@@ -1,7 +1,14 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
 export const HomePage = () => {
+  const history = useHistory();
+
+  const login = () => {
+    window.localStorage.clear();
+    history.push("/signup");
+  }
+
   return (
     <div>
       <div className="row">
@@ -27,13 +34,13 @@ export const HomePage = () => {
                 background: '#43AFFF',
                 color: 'white',
                 width: '144px',
-              }} onClick={<Link to="/login" />}>
+              }} onClick={login} className="cursor">
                 Get Started
               </button>
             </div>
           </div>
         </div>
-      <div className="col-sm-6" style={{ height: 300 }}>
+        <div className="col-sm-6" style={{ height: 300 }}>
           <img src='../../assets/images/home.jpeg' alt="home" />
         </div>
       </div>
@@ -143,6 +150,6 @@ export const HomePage = () => {
           </div>
         </div>
       </div>
-    </div>
+    </div >
   );
 };
