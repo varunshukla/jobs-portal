@@ -6,7 +6,7 @@ const getPostedJobs = async () => {
 }
 
 const getJobCandidates = async (data) => {
-  const response = await API.makeGetCall(`/recruiters/jobs/${data.jobId}/candidates`, true);
+  const response = await API.makeGetCall(`/recruiters/jobs/${data.id}/candidates`, true);
   return response;
 }
 

@@ -3,10 +3,12 @@ import { map } from 'lodash';
 import { Card } from '../common/Card';
 import { getAllJobs } from '../../api/jobs';
 import { applyToJob } from '../../api/candidates';
+import { useHistory } from 'react-router';
 
 export const OpenJobs = () => {
   const [openjobs, setopenjobs] = useState('');
   const [pageNo, setpageNo] = useState(1);
+  const history = useHistory();
 
   useEffect(() => {
     // api call for open job
@@ -30,7 +32,7 @@ export const OpenJobs = () => {
     <div>
       <nav aria-label="breadcrumb">
         <ol className="breadcrumb">
-          <li className="breadcrumb-item">
+          <li className="breadcrumb-item cursor" onClick={() => history.push('/candidate/home')}>
             Home
           </li>
         </ol>

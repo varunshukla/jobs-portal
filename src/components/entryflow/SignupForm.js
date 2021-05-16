@@ -135,7 +135,7 @@ const SignupForm = () => {
           else if (+role === 1)
             history.replace('/candidate/home');
         } else {
-          setserverError(resp.message);
+          setserverError(resp?.message);
         }
       });
     }

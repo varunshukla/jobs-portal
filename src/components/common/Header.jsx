@@ -19,6 +19,7 @@ const Header = () => {
     await window.localStorage.clear();
     setTimeout(function () {
       history.replace('/');
+      window.location.reload();
     }, 1000);
   };
 

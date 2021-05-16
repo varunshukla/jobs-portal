@@ -1,11 +1,13 @@
 body {
   margin: 0;
+  padding-bottom: 8%;
   font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-image: linear-gradient(#1A253C 50%, #EDF6FF 50%);
+  background-color: #EDF6FF;
   background-repeat: no-repeat;
-  /* background-size: auto 40%; */
+  background-attachment: local, scroll;
   min-height: 97vh;
   overflow: auto;
 }

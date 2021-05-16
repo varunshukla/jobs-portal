@@ -149,6 +149,11 @@ const LoginForm = () => {
           <button style={pageSyles.submitStyle} type="submit" onClick={handleSubmit}>Login</button>
         </div>
         <div className="row justify-content-center" style={pageSyles.footerStyle}>
+          <div><span style={pageSyles.newAccountStyle}
+            className="cursor" onClick={() => history.push('/forgot-password')}>&nbsp;Forgot password?</span></div>
+        </div>
+
+        <div className="row justify-content-center" style={pageSyles.footerStyle}>
           <div>New to MyJobs? <span style={pageSyles.newAccountStyle}
             className="cursor" onClick={() => history.push('/signup')}>&nbsp;Create an account</span></div>
         </div>

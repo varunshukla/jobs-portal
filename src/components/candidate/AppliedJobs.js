@@ -1,26 +1,42 @@
 import React, { useEffect, useState } from 'react';
 import { isEmpty, map } from 'lodash';
+import { Link, useHistory } from 'react-router-dom';
+import ReactPaginate from 'react-paginate';
+
 import { Card } from '../common/Card';
-import { Link } from 'react-router-dom';
 import { getAppliedJobs } from '../../api/candidates';
 
 export const AppliedJobs = () => {
   const [appliedjobs, setappliedjobs] = useState(null);
+  const [pageCount, setPageCount] = useState(null);
+  const [pageNo, setpageNo] = useState(0);
+  const history = useHistory();
 
   useEffect(() => {
     // api call for applied job
-    getAppliedJobs().then(resp => {
+    makeCall();
+  }, []);
+
+  const makeCall = () => {
+    getAppliedJobs({pageNo}).then(resp => {
       if (resp.success) {
         setappliedjobs(resp.data);
+        setPageCount(Math.ceil(resp.metadata.count / resp.metadata.limit));
       }
     });
-  }, [appliedjobs])
+  }
+
+  const handlePageClick = (data) => {
+    let selected = data.selected;
+    setpageNo(selected);
+    makeCall();
+  };
 
   return (
     <div>
       <nav aria-label="breadcrumb">
         <ol className="breadcrumb">
-          <li className="breadcrumb-item">
+          <li className="breadcrumb-item cursor" onClick={() => history.push('/candidate/home')}>
             Home
           </li>
           <li className="breadcrumb-item">
@@ -76,6 +92,18 @@ export const AppliedJobs = () => {
           </button>
           </div>
       }
+      <ReactPaginate
+        previousLabel={'<'}
+        nextLabel={'>'}
+        breakLabel={'...'}
+        breakClassName={'break-me'}
+        pageCount={pageCount}
+        marginPagesDisplayed={2}
+        pageRangeDisplayed={5}
+        onPageChange={handlePageClick}
+        containerClassName={'pagination'}
+        activeClassName={'active'}
+      />
     </div>
   );
 };

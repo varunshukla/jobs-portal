@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { isEmpty, map } from 'lodash';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { Card } from '../common/Card';
 import JobsApplicantsList from './JobApplicantsList';
 import { getPostedJobs, getJobCandidates } from '../../api/recruiters';
@@ -10,6 +10,7 @@ export const JobsPosted = () => {
   const [modalShow, setModalShow] = useState(false);
   const [modalApplicants, setmodalJob] = useState(null);
   const [metaData, setmetaData] = useState(null);
+  const history = useHistory();
 
   useEffect(() => {
     // api call for posted jobs
@@ -36,7 +37,7 @@ export const JobsPosted = () => {
     <div>
       <nav aria-label="breadcrumb">
         <ol className="breadcrumb">
-          <li className="breadcrumb-item">
+          <li className="breadcrumb-item cursor" onClick={ () => history.push('/recruiter/home')}>
             Home
           </li>
         </ol>
@@ -65,7 +66,7 @@ export const JobsPosted = () => {
             })
           }
         </div> :
-          <div className="d-flex align-items-center justify-content-center">
+          <div className="align-items-center justify-content-center">
             <div className="row">
               <span className="material-icons material-icons-outlined gray editsize">
                 edit_note

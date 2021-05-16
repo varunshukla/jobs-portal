@@ -2,7 +2,7 @@ import API from './API';
 
 const applyToJob = async (data) => {
   const info = {
-    jobId: data.jobId,
+    jobId: data.id,
   }
   const response = await API.makePostCall('/candidates/jobs', info);
   return response;
@@ -13,8 +13,8 @@ const getAvailableJobs = async () => {
   return response;
 }
 
-const getAppliedJobs = async () => {
-  const response = await API.makeGetCall(`/candidates/jobs/applied`, true);
+const getAppliedJobs = async (data) => {
+  const response = await API.makeGetCall(`/candidates/jobs/applied?pageNo=${data.pageNo}`, true);
   return response;
 }
 

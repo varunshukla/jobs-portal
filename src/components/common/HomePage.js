@@ -1,6 +1,8 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 
+const image = require('./../../assets/images/home.jpeg').default;
+
 export const HomePage = () => {
   const history = useHistory();
 
@@ -18,30 +20,38 @@ export const HomePage = () => {
               font: 'normal normal normal 60px/74px Helvetica Neue',
               color: '#FFFFFF',
             }} className="col">
-              Welcome to My<span style={{ color: '#43AFFF' }}>Jobs</span>
+              <div className="row">
+                <div className="col-sm-8">
+                  Welcome to My<span style={{ color: '#43AFFF' }}>Jobs</span>
+                </div>
+              </div>
             </div>
           </div>
           <div className="row" style={{
             marginTop: 30
           }}>
             <div className="col">
-              <button style={{
-                margin: '10px 0 0 0',
-                padding: '7px 10px',
-                border: '1px solid #43AFFF',
-                opacity: 1,
-                borderRadius: '5px',
-                background: '#43AFFF',
-                color: 'white',
-                width: '144px',
-              }} onClick={login} className="cursor">
-                Get Started
+              <div className="row">
+                <div className="col-sm-8">
+                  <button style={{
+                    margin: '10px 0 0 0',
+                    padding: '7px 10px',
+                    border: '1px solid #43AFFF',
+                    opacity: 1,
+                    borderRadius: '5px',
+                    background: '#43AFFF',
+                    color: 'white',
+                    width: '144px',
+                  }} onClick={login} className="cursor">
+                    Get Started
               </button>
+                </div>
+              </div>
             </div>
           </div>
         </div>
-        <div className="col-sm-6" style={{ height: 300 }}>
-          <img src='../../assets/images/home.jpeg' alt="home" />
+        <div className="col-sm-6" >
+          <img src={image} alt="home" width={600} />
         </div>
       </div>
       <div className="row" style={{

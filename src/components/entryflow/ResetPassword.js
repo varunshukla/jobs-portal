@@ -78,12 +78,11 @@ const ResetPassword = () => {
       verifyPasswordToken(data).then(resp => {
         setserverError(null);
         seterrors({});
-        
-        if (resp.success) {
+        if (resp?.success) {
           setShow(true);
-          history.push('/login');
+          history.push('/');
         } else {
-          setserverError("Something went wrong. Please try again.");
+          setserverError(`Something went wrong. Please try again. \n ${resp?.message}`);
         }
       });
     }

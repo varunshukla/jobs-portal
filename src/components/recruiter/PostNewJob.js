@@ -66,7 +66,7 @@ const PostNewJob = () => {
       <div className="row justify-content-start">
         <nav aria-label="breadcrumb">
           <ol className="breadcrumb">
-            <li className="breadcrumb-item">
+            <li className="breadcrumb-item cursor" onClick={() => history.push('/recruiter/home')}>
               Home
           </li>
             <li className="breadcrumb-item">

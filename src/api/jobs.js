@@ -11,7 +11,7 @@ async function createJob(data) {
 }
 
 async function getJobDetails(data) {
-  const response = await API.makeGetCall(`/jobs/${data.jobId}`);
+  const response = await API.makeGetCall(`/jobs/${data.id}`);
   return response;
 }
 
@@ -22,7 +22,7 @@ async function getAllJobs(data) {
 
 async function deleteJob(data) {
   const info = {
-    jobId: data.jobId,
+    jobId: data.id,
   }
   const response = await API.makeDeleteCall('/jobs', info);
   return response;
