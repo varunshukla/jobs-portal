@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
+import { register } from '../../api/auth';
 import { InputField } from '../common/InputField';
 import { RadioField } from '../common/RadioField';
 
@@ -43,6 +44,9 @@ const SignupForm = () => {
   const [email, setemailaddress] = useState(undefined);
   const [skills, setskills] = useState(null);
   const [errors, seterrors] = useState({});
+  const [serverError, setserverError] = useState(null);
+
+  let history = useHistory();
 
   const handleValidation = () => {
     const fields = {
@@ -80,6 +84,10 @@ const SignupForm = () => {
       isFormValid = false;
       errors["confirmpassword"] = "Field is mandatory";
     }
+    if (fields["initialpassword"].length < 6 || fields["confirmpassword"] < 6) {
+      isFormValid = false;
+      errors["confirmpassword"] = "Password must be greater than 6 characters";
+    }
 
     if (!fields["initialpassword"] !== !fields["confirmpassword"]) {
       isFormValid = false;
@@ -110,13 +118,26 @@ const SignupForm = () => {
     const isValid = handleValidation();
     if (isValid) {
       const data = {
-        role,
-        fullname: fullname,
+        userRole: role,
+        name: fullname,
         password: initialpassword,
+        confirmPassword: confirmpassword,
         email: email,
         skills
       };
       //api call for signup
+      register(data).then(resp => {
+        seterrors({});
+        setserverError(null);
+        if (resp.success) {
+          if (role === 0) // recruiter role
+            history.push('/recruiter/home');
+          else if (role === 1)
+            history.push('/candidate/home');
+        } else {
+          setserverError(resp.message);
+        }
+      });
     }
   };
 
@@ -177,11 +198,27 @@ const SignupForm = () => {
           value={skills}
           onChange={(e) => { setskills(e) }}
           placeholder="Enter comma separated skills" />
+        {
+          serverError &&
+          <div className="row justify-content-center">
+            <div style={{
+              float: 'right',
+              font: 'normal normal normal 12px / 14px Helvetica Neue',
+              color: '#FF0000',
+              opacity: 0.8
+            }}>
+              {serverError}
+            </div>
+          </div>
+        }
         <div className="row justify-content-center">
           <button style={pageSyles.submitStyle} type="submit" onClick={handleSignup} >Signup</button>
         </div>
         <div className="row justify-content-center" style={pageSyles.footerStyle}>
-          <div>Have an account? <Link style={pageSyles.newAccountStyle} to="/login">&nbsp;Login</Link></div>
+          <div>Have an account? <span
+            style={pageSyles.newAccountStyle}
+            onClick={() => history.push("/login")}
+          >&nbsp;Login</span></div>
         </div>
       </div >
     </div >

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
+import { login } from '../../api/auth';
 import { InputField } from '../common/InputField';
 
 const pageSyles = {
@@ -42,15 +43,27 @@ const pageSyles = {
 const LoginForm = () => {
   const [username, setusername] = useState('');
   const [password, setpassword] = useState('');
-  const [error, seterror] = useState(false);
+  const [error, seterror] = useState(null);
+
+  const history = useHistory();
 
   const handleSubmit = () => {
     if (!username || !password) {
-      seterror(true);
+      seterror("Incorrect email address & password");
     } else {
-      const data = { username, password };
-      //api all login
-      // onSubmit(data);
+      const data = { email: username, password };
+
+      login(data).then(resp => {
+        seterror(null);
+        if (resp.success) {
+          if (resp.data.role === 0)
+            history.push('/recruiter/home');
+          else
+            history.push('/candidate/home');
+        } else {
+          seterror(resp.message);
+        }
+      });
     }
   };
 
@@ -72,14 +85,14 @@ const LoginForm = () => {
           type="password"
           value={password}
           onChange={setpassword}
-          error={error}
-          errorText={"Incorrect email address & password"}
+          error={!!error}
+          errorText={error}
         />
         <div className="row justify-content-center">
-          <button style={pageSyles.submitStyle} type="submit" onClick={handleSubmit} >Login</button>
+          <button style={pageSyles.submitStyle} type="submit" onClick={handleSubmit}>Login</button>
         </div>
         <div className="row justify-content-center" style={pageSyles.footerStyle}>
-          <div>New to MyJobs? <Link style={pageSyles.newAccountStyle} to="/signup">&nbsp;Create an account</Link></div>
+          <div>New to MyJobs? <span style={pageSyles.newAccountStyle} onClick={() => history.push('/signup')}>&nbsp;Create an account</span></div>
         </div>
       </div >
     </div >

@@ -1,54 +1,33 @@
 import React, { useEffect, useState } from 'react';
 import { isEmpty, map } from 'lodash';
-import { Card } from '../common/Card';
 import { Link } from 'react-router-dom';
+import { Card } from '../common/Card';
 import JobsApplicantsList from './JobApplicantsList';
-
-const data = [
-  {
-    title: "Designer",
-    description: "lkdsjf sgsh fsd afbgekjfbf adj  fefgejf fgsef ffjhw rwemfef wegfwef wefwefjw das sh asdhs a bjhfas dwkgc asasasf ajfgfh ff fjfafbasjhfg s",
-    location: "Gurgaon",
-    id: 'ewewsdfe'
-  }, {
-    title: "DesignerAA",
-    description: "lkdsjf sgsh fsd afbgekjfbf adj  fefgejf fgsef ffjhw rwemfef wegfwef wefwefjw das sh asdhs a bjhfas dwkgc asasasf ajfgfh ff fjfafbasjhfg s",
-    location: "Gurgaon",
-    id: 'ewewsdfe'
-  }, {
-    title: "Akjk",
-    description: "lkdsjf sgsh fsd afbgekjfbf adj  fefgejf fgsef ffjhw rwemfef wegfwef wefwefjw das sh asdhs a bjhfas dwkgc asasasf ajfgfh ff fjfafbasjhfg s",
-    location: "Gurgaon",
-    id: 'ewewsdfe'
-  }, {
-    title: "skjdh",
-    description: "lkdsjf sgsh fsd afbgekjfbf adj  fefgejf fgsef ffjhw rwemfef wegfwef wefwefjw das sh asdhs a bjhfas dwkgc asasasf ajfgfh ff fjfafbasjhfg s",
-    location: "Gurgaon",
-    id: 'ewewsdfe'
-  }, {
-    title: "sdsfkjsdhf",
-    description: "lkdsjf sgsh fsd afbgekjfbf adj  fefgejf fgsef ffjhw rwemfef wegfwef wefwefjw das sh asdhs a bjhfas dwkgc asasasf ajfgfh ff fjfafbasjhfg s",
-    location: "Gurgaon",
-    id: 'ewewsdfe'
-  },
-];
+import { getPostedJobs, getJobCandidates } from '../../api/recruiters';
 
 export const JobsPosted = () => {
-  const [openjobs, setopenjobs] = useState(data)
+  const [openjobs, setopenjobs] = useState(null)
   const [modalShow, setModalShow] = useState(false);
-  const [modalJob, setmodalJob] = useState(null);
+  const [modalApplicants, setmodalJob] = useState(null);
 
   useEffect(() => {
     // api call for posted jobs
-    setopenjobs(data);
-
+    getPostedJobs().then(resp => {
+      if (resp.success) {
+        setopenjobs(resp.data);
+      }
+    });
+    
   }, [openjobs])
 
   const actionCta = (job) => {
     // open candidates applied
-    console.log(job);
-    setModalShow(true);
-    setmodalJob(job);
+    getJobCandidates(job).then(resp => {
+      if (resp.success) {
+        setModalShow(true);
+        setmodalJob(resp.data);
+      }
+    });
   }
 
   return (
@@ -117,7 +96,7 @@ export const JobsPosted = () => {
           </button>
           </div>
       }
-      <JobsApplicantsList show={modalShow} onHide={() => setModalShow(false)} modalData={modalJob} />
+      <JobsApplicantsList show={modalShow} onHide={() => setModalShow(false)} modalData={modalApplicants} />
     </div>
   );
 };

@@ -13,4 +13,4 @@ const getJobCandidates = async (data) => {
 }
 
 // eslint-disable-next-line import/no-anonymous-default-export
-export default { getPostedJobs, getJobCandidates };
+export { getPostedJobs, getJobCandidates };

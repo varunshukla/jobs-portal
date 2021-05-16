@@ -14,7 +14,6 @@ async function createJob(data) {
 
 async function getJobDetails(data) {
   const response = await API.makeGetCall(`/jobs/${data.jobId}`);
-  console.log(response);
   return response;
 }
 

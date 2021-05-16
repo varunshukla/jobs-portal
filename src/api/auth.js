@@ -4,9 +4,8 @@ const login = async (data) => {
   const response = await API.makePostCall('/auth/login', {
     email: data.email, password: data.password
   });
-  console.log(response);
-  // save received info in local storage
   window.localStorage.setItem('user', response);
+  window.localStorage.setItem('token', response.data.token);
   return response;
 };
 
@@ -21,7 +20,8 @@ const register = async (data) => {
   }
 
   const response = await API.makePostCall('/auth/register', info);
-  console.log(response);
+  window.localStorage.setItem('user', response);
+  window.localStorage.setItem('token', response.data.token);
   return response;
 }
 
@@ -29,28 +29,34 @@ const resetPasswordToken = async (data) => {
   const response = await API.makeGetCall(`/auth/resetpassword?email=${data.email}`);
   console.log(response);
   //save in local storage
-  window.localStorage.setItem('resettoken', response);
+  window.localStorage.setItem('resettokendata', response.data);
   return response;
 }
 
 const verifyPasswordToken = async (data) => {
-  const response = await API.makeGetCall(`/auth/resetpassword/${data.token}`);
-  console.log(response);
-  //save i local storage
-  window.localStorage.setItem('passwordtoken', response);
-  return response;
+  const resetTokenData = window.localStorage.getItem('resettokendata');
+  if (resetTokenData) {
+    const response = await API.makeGetCall(`/auth/resetpassword/${resetTokenData.token}`);
+    if (response.data.exp - parseInt(new Date().getTime() / 1000) > 0) {
+      changePassword({ ...data, token: resetPasswordToken.token }).then(resp => {
+        if (resp.success) {
+          window.localStorage.setItem('user', response);
+          window.localStorage.setItem('token', response.data.token);
+          return resp;
+        }
+      });
+    }
+  }
 }
 
 const changePassword = async (data) => {
   const info = {
     password: data.password,
     confirmPassword: data.confirmPassword,
-    token: data.token, // get from local storage
+    token: data.token,
   }
-
   const response = await API.makePostCall('/auth/resetpassword', info);
-  console.log(response);
   return response;
 }
 // eslint-disable-next-line import/no-anonymous-default-export
-export default { login, register, resetPasswordToken, verifyPasswordToken, changePassword };
+export { login, register, resetPasswordToken, verifyPasswordToken, changePassword };

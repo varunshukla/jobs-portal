@@ -2,38 +2,18 @@ import React, { useEffect, useState } from 'react';
 import { isEmpty, map } from 'lodash';
 import { Card } from '../common/Card';
 import { Link } from 'react-router-dom';
-
-const data = [
-  {
-    title: "Designer",
-    description: "lkdsjf sgsh fsd afbgekjfbf adj  fefgejf fgsef ffjhw rwemfef wegfwef wefwefjw das sh asdhs a bjhfas dwkgc asasasf ajfgfh ff fjfafbasjhfg s",
-    location: "Gurgaon",
-  }, {
-    title: "DesignerAA",
-    description: "lkdsjf sgsh fsd afbgekjfbf adj  fefgejf fgsef ffjhw rwemfef wegfwef wefwefjw das sh asdhs a bjhfas dwkgc asasasf ajfgfh ff fjfafbasjhfg s",
-    location: "Gurgaon",
-  }, {
-    title: "Akjk",
-    description: "lkdsjf sgsh fsd afbgekjfbf adj  fefgejf fgsef ffjhw rwemfef wegfwef wefwefjw das sh asdhs a bjhfas dwkgc asasasf ajfgfh ff fjfafbasjhfg s",
-    location: "Gurgaon",
-  }, {
-    title: "skjdh",
-    description: "lkdsjf sgsh fsd afbgekjfbf adj  fefgejf fgsef ffjhw rwemfef wegfwef wefwefjw das sh asdhs a bjhfas dwkgc asasasf ajfgfh ff fjfafbasjhfg s",
-    location: "Gurgaon",
-  }, {
-    title: "sdsfkjsdhf",
-    description: "lkdsjf sgsh fsd afbgekjfbf adj  fefgejf fgsef ffjhw rwemfef wegfwef wefwefjw das sh asdhs a bjhfas dwkgc asasasf ajfgfh ff fjfafbasjhfg s",
-    location: "Gurgaon",
-  },
-];
+import { getAppliedJobs } from '../../api/candidates';
 
 export const AppliedJobs = () => {
-  const [appliedjobs, setappliedjobs] = useState(data)
+  const [appliedjobs, setappliedjobs] = useState(null);
 
   useEffect(() => {
-    // api call for open job
-    setappliedjobs(data);
-
+    // api call for applied job
+    getAppliedJobs().then(resp => {
+      if (resp.success) {
+        setappliedjobs(resp.data);
+      }
+    });
   }, [appliedjobs])
 
   return (

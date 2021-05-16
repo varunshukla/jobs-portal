@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
+import { createJob } from '../../api/jobs';
 import { InputField } from '../common/InputField';
 
 const pageSyles = {
@@ -40,16 +42,22 @@ const PostNewJob = () => {
   const [title, settitle] = useState('');
   const [description, setdescription] = useState('');
   const [locaion, setlocation] = useState('');
-
   const [error, seterror] = useState(false);
+
+  const history = useHistory();
 
   const handlePostJob = () => {
     if (!title || !description || !locaion) {
       seterror(true);
     } else {
       const data = { title, description, locaion };
-      //api all login
-      // onSubmit(data);
+      createJob(data).then(resp => {
+        if (resp.success) {
+          history.push('/recruiter/home');
+        } else if (!resp.success) {
+          seterror(true);
+        }
+      });
     }
   };
 

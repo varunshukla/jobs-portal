@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { map } from 'lodash';
 import { Card } from '../common/Card';
 import { getAllJobs } from '../../api/jobs';
+import { applyToJob } from '../../api/candidates';
 
 export const OpenJobs = () => {
   const [openjobs, setopenjobs] = useState('');
@@ -18,7 +19,11 @@ export const OpenJobs = () => {
 
   const actionCta = (job) => {
     // apply for job
-    console.log(job);
+    applyToJob(job).then(resp => {
+      if (resp.success) {
+        setopenjobs(resp.data);
+      }
+    });
   }
 
   return (
@@ -51,7 +56,7 @@ export const OpenJobs = () => {
                 description={eachJob.description}
                 location={eachJob.location}
                 showAction={true}
-                actionCta={actionCta}
+                actionCta={() => actionCta(eachJob)}
                 actionText="Apply"
               />
             );

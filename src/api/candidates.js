@@ -5,7 +5,6 @@ const applyToJob = async (data) => {
     jobId: data.jobId,
   }
   const response = await API.makePostCall('/candidates/jobs', info);
-  console.log(response);
   return response;
 }
 
@@ -22,4 +21,4 @@ const getAppliedJobs = async () => {
 }
 
 // eslint-disable-next-line import/no-anonymous-default-export
-export default { applyToJob, getAvailableJobs, getAppliedJobs };
+export { applyToJob, getAvailableJobs, getAppliedJobs };

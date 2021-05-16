@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
+import { resetPasswordToken } from '../../api/auth';
 import { InputField } from '../common/InputField';
 
 const pageSyles = {
@@ -39,14 +41,27 @@ const pageSyles = {
 const ForgotPassword = () => {
   const [email, setemail] = useState('');
   const [error, seterror] = useState(false);
+  const [serverError, setserverError] = useState(null);
+
+  const history = useHistory();
 
   const handleSubmit = () => {
     if (!email) {
       seterror(true);
     } else {
-      const data = { username: email };
+      const data = { email };
       //api all login
-      // onSubmit(data);
+      resetPasswordToken(data).then(resp => {
+        
+        seterror(false);
+        setserverError(null);
+
+        if (resp.success) {
+          if (resp.data.token)
+            history.push('/reset-password');
+        } else
+          setserverError(resp.message);
+      });
     }
   };
 
@@ -68,6 +83,19 @@ const ForgotPassword = () => {
             placeholder="Enter your email"
           />
         </div>
+        {
+          serverError &&
+          <div className="row justify-content-center">
+            <div style={{
+              float: 'right',
+              font: 'normal normal normal 12px / 14px Helvetica Neue',
+              color: '#FF0000',
+              opacity: 0.8
+            }}>
+              {serverError}
+            </div>
+          </div>
+        }
         <div className="row justify-content-center">
           <button style={pageSyles.submitStyle} type="submit" onClick={handleSubmit} >Submit</button>
         </div>

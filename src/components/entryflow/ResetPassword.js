@@ -1,4 +1,7 @@
 import React, { useState } from 'react';
+import { Toast } from 'react-bootstrap';
+import { useHistory } from 'react-router-dom';
+import { verifyPasswordToken } from '../../api/auth';
 import { InputField } from '../common/InputField';
 
 const pageSyles = {
@@ -36,6 +39,10 @@ const ResetPassword = () => {
   const [initialpassword, setinitialpassword] = useState(undefined);
   const [confirmpassword, setconfirmpassword] = useState(undefined);
   const [errors, seterrors] = useState({});
+  const [serverError, setserverError] = useState(null);
+  const [show, setShow] = useState(false);
+
+  const history = useHistory();
 
   const handleValidation = () => {
     const fields = {
@@ -65,8 +72,20 @@ const ResetPassword = () => {
     if (isValid) {
       const data = {
         password: initialpassword,
+        confirmPassword: confirmpassword,
       };
       //api call for signup
+      verifyPasswordToken(data).then(resp => {
+        setserverError(null);
+        seterrors({});
+        
+        if (resp.success) {
+          setShow(true);
+          history.push('/login');
+        } else {
+          setserverError("Something went wrong. Please try again.");
+        }
+      });
     }
   };
 
@@ -93,10 +112,39 @@ const ResetPassword = () => {
           error={!!errors['confirmpassword']}
           errorText={errors['confirmpassword']}
           placeholder="Enter your password" />
+        {
+          serverError &&
+          <div className="row justify-content-center">
+            <div style={{
+              float: 'right',
+              font: 'normal normal normal 12px / 14px Helvetica Neue',
+              color: '#FF0000',
+              opacity: 0.8
+            }}>
+              {serverError}
+            </div>
+          </div>
+        }
         <div className="row justify-content-center">
           <button style={pageSyles.resetStyle} type="submit" onClick={handleReset} >Reset</button>
         </div>
       </div>
+      <Toast onClose={() => setShow(false)} show={show} delay={3000} autohide
+        style={{
+          position: 'absolute',
+          top: 0,
+          right: 0,
+        }}>
+        <Toast.Header>
+          <img
+            src="holder.js/20x20?text=%20"
+            className="rounded mr-2"
+            alt=""
+          />
+          <strong className="mr-auto">Voila</strong>
+        </Toast.Header>
+        <Toast.Body>Password changed successfully!!</Toast.Body>
+      </Toast>
     </div >
   );
 };
